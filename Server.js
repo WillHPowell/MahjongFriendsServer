@@ -1,4 +1,4 @@
-import Pile from './Objects/Pile.js'
+import Pile from './Objects/pile.js'
 import * as http from 'http'
 import * as io from 'socket.io'
 
