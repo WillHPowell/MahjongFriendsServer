@@ -17,12 +17,10 @@ const HONOR_ORDER_BY_MAP = {
 }
 
 export default class Tile {
-    constructor (type, value, isRed) {
+    constructor (type, value, isRed = false) {
         this.type = type
         this.value = value
-
-        // If not explicitly defined as Red, then it is not Red
-        this.isRed = isRed || false
+        this.isRed = isRed
     }
 
     // Is Green if it is an Odd Sou tile, or the Green Dragon
