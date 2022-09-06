@@ -1,4 +1,4 @@
-import Tile, { TILE_TYPE, TILE_VALUE, TILE_DRAGON_VALUE, TILE_WIND_VALUE } from "./Tile.js"
+import Tile, { TILE_TYPE, TILE_VALUE, TILE_DRAGON_VALUE, TILE_WIND_VALUE } from './Tile.js'
 
 export default class Pile {
     constructor(isFreshWall = true) {
@@ -52,12 +52,12 @@ function freshWall() {
 
     for (let i = 0; i < 4; i++) {
         TILE_TYPE.flatMap(type => {
-            if (type === "Wind")
+            if (type === 'Wind')
                 TILE_WIND_VALUE.map(value => {
                     tiles.push(new Tile(type, value))
                 })
 
-            else if (type === "Dragon") {
+            else if (type === 'Dragon') {
                 TILE_DRAGON_VALUE.map(value => {
                     tiles.push(new Tile(type, value))
                 })
