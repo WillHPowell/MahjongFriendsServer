@@ -1,4 +1,4 @@
-import Tile, { TILE_TYPE, TILE_VALUE, TILE_DRAGON_VALUE, TILE_WIND_VALUE } from './Tile.js'
+import Tile, { TILE_TYPE, TILE_VALUE, TILE_DRAGON_VALUE, TILE_WIND_VALUE } from './tile'
 
 export default class Pile {
     constructor(isFreshWall = true) {
