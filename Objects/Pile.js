@@ -1,13 +1,9 @@
-import Tile from "./Tile.js"
-
-const TILE_TYPE = ["Pin", "Sou", "Man", "Wind", "Dragon"]
-const TILE_VALUE = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-const TILE_WIND_VALUE = ["East", "South", "West", "North"]
-const TILE_DRAGON_VALUE = ["Red", "Green", "White"]
+import Tile, { TILE_TYPE, TILE_VALUE, TILE_DRAGON_VALUE, TILE_WIND_VALUE } from "./Tile.js"
 
 export default class Pile {
-    constructor(tiles = freshPile()) {
-        this.tiles = tiles
+    constructor(isFreshWall = true) {
+        if (isFreshWall) this.tiles = freshWall()
+        else this.tiles = []
     }
 
     get numTiles() {
@@ -51,7 +47,7 @@ export default class Pile {
     }
 }
 
-function freshPile() {
+function freshWall() {
     let tiles = []
 
     for (let i = 0; i < 4; i++) {
@@ -68,7 +64,7 @@ function freshPile() {
             }
             else {
                 TILE_VALUE.map(value => {
-                    // Add one set of Red 5s
+                    // Add one Red 5 for each Non-Terminal Tile Type
                     if (i === 0 && value === 5) { tiles.push(new Tile(type, value, true)) }
                     else { tiles.push(new Tile(type, value)) }
                 })
