@@ -21,24 +21,28 @@ export const HONOR_ORDER_BY_MAP = {
     'White': 3
 }
 
+/* Describes the properties of a single Mahjong Tile */
 export default class Tile {
-    constructor (type, value, isRed = false) {
+    constructor (type, value, isRed = false, isHidden = false) {
         if (!TILE_TYPE.includes(type)) {
             throw new Error('Type needs to be Pin, Sou, Man, Wind or Dragon.')
         } else {
             this.type = type
         }
+
         if (!TILE_VALUE.includes(value) && !TILE_WIND_VALUE.includes(value) && !TILE_DRAGON_VALUE.includes(value)) {
             throw new Error('Value needs to be 1-9 or a Wind or Dragon Tile.')
         } else {
             this.value = value
         }
+
         if (isRed && value !== 5) {
             throw new Error('A Tile cannot be Red if it is not a value of 5.')
         } else {
             this.isRed = isRed
         }
 
+        this.isHidden = isHidden
         
         if ([TILE_TYPE[0], TILE_TYPE[1], TILE_TYPE[2]].includes(type) && isNaN(value)) {
             throw new Error('Non-Honor Tiles must have numbered values.')
@@ -64,12 +68,19 @@ export default class Tile {
         return (this.value === 1 || this.value === 9)
     }
 
+    // Used for Sorting a Mahjong Hand
     get orderBy () {
         return TYPE_ORDER_BY_MAP[this.type] + (this.isHonor ? HONOR_ORDER_BY_MAP[this.value] : this.value)
     }
 
+    // Allows to only show tiles that aren't hidden to the player
+    flipTile () {
+        this.isHidden = !this.isHidden
+    }
+
     getUnicode () {
-        if (this.type === TILE_TYPE[3] && this.value === TILE_WIND_VALUE[0]) { return '&#126976;' }
+        if (this.isHidden) { return '&#127019;'}
+        else if (this.type === TILE_TYPE[3] && this.value === TILE_WIND_VALUE[0]) { return '&#126976;' }
         else if (this.type === TILE_TYPE[3] && this.value === TILE_WIND_VALUE[1]) { return '&#126977;' }
         else if (this.type === TILE_TYPE[3] && this.value === TILE_WIND_VALUE[2]) { return '&#126978;' }
         else if (this.type === TILE_TYPE[3] && this.value === TILE_WIND_VALUE[3]) { return '&#126979;' }

@@ -1,13 +1,20 @@
-import Tile, { TILE_TYPE, TILE_VALUE, TILE_DRAGON_VALUE, TILE_WIND_VALUE } from './Tile.js'
-
+/* Describes how multiple Tiles should act */
 export default class Pile {
-    constructor(isFreshWall = true) {
-        if (isFreshWall) this.tiles = freshWall()
-        else this.tiles = []
+    constructor(tiles, isHidden = false) {
+        this.tiles = tiles
+        this.isHidden = isHidden
     }
 
     get numTiles() {
         return this.tiles.length
+    }
+
+    // Flips a between Hidden and Not Hidden
+    flipPile () {
+        this.isHidden = !this.isHidden
+        for (let i = 0; i < this.numTiles; i++) {
+            this.tiles[i].flipTile()
+        }
     }
 
     shuffle() {
@@ -31,46 +38,21 @@ export default class Pile {
         return new Pile(this.tiles.splice(0, numToDeal))
     }
 
-    sortTiles() {
+    sortPile() {
         this.tiles.sort((a, b) => {
-            return b.orderBy - a.orderBy
+            return a.orderBy - b.orderBy
         })
     }
 
     getUnicode() {
-        const counter = this.numTiles
-        let unicode = this.tiles.pop().getUnicode()
-        for (let i = 1; i < counter; i++) {
-            unicode += this.tiles.pop().getUnicode()
+        let unicode = ''
+
+        if (this.numTiles > 0) {
+            for (let i = 1; i < this.numTiles; i++) {
+                unicode += this.tiles[i].getUnicode()
+            }
         }
+
         return unicode
     }
-}
-
-function freshWall() {
-    let tiles = []
-
-    for (let i = 0; i < 4; i++) {
-        TILE_TYPE.flatMap(type => {
-            if (type === 'Wind')
-                TILE_WIND_VALUE.map(value => {
-                    tiles.push(new Tile(type, value))
-                })
-
-            else if (type === 'Dragon') {
-                TILE_DRAGON_VALUE.map(value => {
-                    tiles.push(new Tile(type, value))
-                })
-            }
-            else {
-                TILE_VALUE.map(value => {
-                    // Add one Red 5 for each Non-Terminal Tile Type
-                    if (i === 0 && value === 5) { tiles.push(new Tile(type, value, true)) }
-                    else { tiles.push(new Tile(type, value)) }
-                })
-            }
-        })
-    }
-
-    return tiles
 }
