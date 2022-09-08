@@ -1,6 +1,7 @@
 import * as http from 'http'
 import * as io from 'socket.io'
 import Wall from './Objects/wall.js'
+import Hand from './Objects/hand.js'
 import numeral from 'numeral'
 
 const httpServer = new http.Server()
@@ -25,6 +26,6 @@ setInterval(() => {
 
 function gameInit(socket) {
     wall.shuffle()
-    socket.data.hand = wall.deal(14)
+    socket.data.hand = new Hand(wall.deal(14))
     socket.data.hand.sortPile()
 }

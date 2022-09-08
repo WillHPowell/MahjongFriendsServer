@@ -35,7 +35,7 @@ export default class Pile {
     }
 
     deal(numToDeal) {
-        return new Pile(this.tiles.splice(0, numToDeal))
+        return this.tiles.splice(0, numToDeal)
     }
 
     sortPile() {
