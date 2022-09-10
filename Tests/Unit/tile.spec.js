@@ -9,7 +9,7 @@ describe('Able to create a new Tile', () => {
         expect(tile.isTerminal).toBeTruthy()
         expect(tile.isHonor).toBeFalsy()
         expect(tile.orderBy).toBe(1)
-        expect(tile.getUnicode()).toBe('&#126983;')
+        expect(tile.unicode).toBe('&#126983;')
     })
 
     test(' - Able to create a North Wind Tile', () => {
@@ -20,7 +20,7 @@ describe('Able to create a new Tile', () => {
         expect(tile.isTerminal).toBeFalsy()
         expect(tile.isHonor).toBeTruthy()
         expect(tile.orderBy).toBe(34)
-        expect(tile.getUnicode()).toBe('&#126979;')
+        expect(tile.unicode).toBe('&#126979;')
     })
 })
 

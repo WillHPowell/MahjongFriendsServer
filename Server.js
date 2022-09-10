@@ -16,7 +16,7 @@ server.on('connection', socket => {
 
     if (wall.numTiles === 0) wall = new Wall()
     gameInit(socket)
-    socket.emit('deal', socket.data.hand.getUnicode())
+    socket.emit('deal', [socket.data.handNorth, socket.data.handSouth, socket.data.handEast, socket.data.handWest])
 })
 
 setInterval(() => {
@@ -26,6 +26,12 @@ setInterval(() => {
 
 function gameInit(socket) {
     wall.shuffle()
-    socket.data.hand = new Hand(wall.deal(14))
-    socket.data.hand.sortPile()
+    socket.data.handNorth = new Hand(wall.deal(14))
+    socket.data.handSouth = new Hand(wall.deal(14))
+    socket.data.handEast = new Hand(wall.deal(14))
+    socket.data.handWest = new Hand(wall.deal(14))
+    socket.data.handNorth.sortPile()
+    socket.data.handSouth.flipPile()
+    socket.data.handEast.flipPile()
+    socket.data.handWest.flipPile()
 }
