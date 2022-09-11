@@ -1,13 +1,28 @@
-import Tile, { TILE_TYPE, TILE_VALUE, TILE_DRAGON_VALUE, TILE_WIND_VALUE } from './tile'
-
+/* Describes how multiple Tiles should act */
 export default class Pile {
-    constructor(isFreshWall = true) {
-        if (isFreshWall) this.tiles = freshWall()
-        else this.tiles = []
+    constructor(tiles = [], isHidden = false) {
+        this.tiles = tiles
+        this.isHidden = isHidden
+
+
+        // If the tiles are not Hidden, but the Pile is, Flip all of the tiles provided
+        if (this.isHidden) {
+            for (let i = 0; i < this.numTiles; i++) {
+                if (this.tiles[i].isHidden !== this.isHidden) this.tiles[i].flip()
+            }
+        }
     }
 
     get numTiles() {
         return this.tiles.length
+    }
+
+    // Flips a between Hidden and Not Hidden
+    flip() {
+        this.isHidden = !this.isHidden
+        for (let i = 0; i < this.numTiles; i++) {
+            this.tiles[i].flip()
+        }
     }
 
     shuffle() {
@@ -28,49 +43,13 @@ export default class Pile {
     }
 
     deal(numToDeal) {
-        return new Pile(this.tiles.splice(0, numToDeal))
+        return this.tiles.splice(0, numToDeal)
     }
 
-    sortTiles() {
+    sort() {
         this.tiles.sort((a, b) => {
-            return b.orderBy - a.orderBy
+            if (a.orderBy !== b.orderBy) return a.orderBy - b.orderBy
+            else return a.isRed ? -1 : 1
         })
     }
-
-    getUnicode() {
-        const counter = this.numTiles
-        let unicode = this.tiles.pop().getUnicode()
-        for (let i = 1; i < counter; i++) {
-            unicode += this.tiles.pop().getUnicode()
-        }
-        return unicode
-    }
-}
-
-function freshWall() {
-    let tiles = []
-
-    for (let i = 0; i < 4; i++) {
-        TILE_TYPE.flatMap(type => {
-            if (type === 'Wind')
-                TILE_WIND_VALUE.map(value => {
-                    tiles.push(new Tile(type, value))
-                })
-
-            else if (type === 'Dragon') {
-                TILE_DRAGON_VALUE.map(value => {
-                    tiles.push(new Tile(type, value))
-                })
-            }
-            else {
-                TILE_VALUE.map(value => {
-                    // Add one Red 5 for each Non-Terminal Tile Type
-                    if (i === 0 && value === 5) { tiles.push(new Tile(type, value, true)) }
-                    else { tiles.push(new Tile(type, value)) }
-                })
-            }
-        })
-    }
-
-    return tiles
 }
