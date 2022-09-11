@@ -14,9 +14,9 @@ let wall = new Wall()
 server.on('connection', socket => {
     console.log('A user connected.')
 
-    if (wall.numTiles === 0) wall = new Wall()
     gameInit(socket)
     socket.emit('deal', [socket.data.handNorth, socket.data.handSouth, socket.data.handEast, socket.data.handWest])
+    wall = new Wall()
 })
 
 setInterval(() => {
@@ -30,8 +30,11 @@ function gameInit(socket) {
     socket.data.handSouth = new Hand(wall.deal(14))
     socket.data.handEast = new Hand(wall.deal(14))
     socket.data.handWest = new Hand(wall.deal(14))
-    socket.data.handNorth.sortPile()
-    socket.data.handSouth.flipPile()
-    socket.data.handEast.flipPile()
-    socket.data.handWest.flipPile()
+    socket.data.handNorth.sort()
+    socket.data.handSouth.sort()
+    socket.data.handEast.sort()
+    socket.data.handWest.sort()
+    // socket.data.handSouth.flip()
+    // socket.data.handEast.flip()
+    // socket.data.handWest.flip()
 }

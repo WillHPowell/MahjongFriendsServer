@@ -2,7 +2,6 @@ export const TILE_TYPE = ['Pin', 'Sou', 'Man', 'Wind', 'Dragon']
 export const TILE_VALUE = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 export const TILE_WIND_VALUE = ['East', 'South', 'West', 'North']
 export const TILE_DRAGON_VALUE = ['Red', 'Green', 'White']
-
 export const TYPE_ORDER_BY_MAP = {
     'Man': 0,
     'Sou': 10,
@@ -10,7 +9,6 @@ export const TYPE_ORDER_BY_MAP = {
     'Wind': 30,
     'Dragon': 35
 }
-
 export const HONOR_ORDER_BY_MAP = {
     'East': 1,
     'South': 2,
@@ -65,7 +63,7 @@ export default class Tile {
     }
 
     // Allows to only show tiles that aren't hidden to the player
-    flipTile() {
+    flip() {
         this.isHidden = !this.isHidden
         this.unicode = GetUnicode(this.type, this.value, this.isHidden)
     }

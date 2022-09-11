@@ -28,31 +28,45 @@ describe('Cannot create an invalid Tile', () => {
     test(' - Cannot use an invalid Type', () => {
         expect(() => {
             new Tile('Not a Type', 1)
-        }).toThrow()
+        }).toThrow('Type needs to be Pin, Sou, Man, Wind or Dragon.')
     })
 
     test(' - Cannot use an invalid Value', () => {
         expect(() => {
             new Tile('Pin', 10)
-        }).toThrow()
+        }).toThrow('Value needs to be 1-9 or a Wind or Dragon Tile.')
+
+        expect(() => {
+            new Tile('Pin', 'Green')
+        }).toThrow('Non-Honor Tiles must have numbered values.')
+
+        expect(() => {
+            new Tile('Sou', 'North')
+        }).toThrow('Non-Honor Tiles must have numbered values.')
     })
 
     test(' - Cannot give Honor Tiles invalid Values', () => {
         expect(() => {
             new Tile('Wind', 'White')
-        }).toThrow()
+        }).toThrow('Wind Tiles must be either North, South, East or West.')
 
         expect(() => {
             new Tile('Wind', 1)
-        }).toThrow()
+        }).toThrow('Wind Tiles must be either North, South, East or West.')
 
         expect(() => {
             new Tile('Dragon', 'North')
-        }).toThrow()
+        }).toThrow('Dragon Tiles must be either Green, Red or White.')
 
         expect(() => {
             new Tile('Dragon', 1)
-        }).toThrow()
+        }).toThrow('Dragon Tiles must be either Green, Red or White.')
+    })
+
+    test(' - Cannot make a tile that is not a 5 a Red Tile', () => {
+        expect(() => {
+            new Tile('Pin', 7, true)
+        }).toThrow('A Tile cannot be Red if it is not a value of 5.')
     })
 })
 
@@ -79,8 +93,24 @@ describe('Color of Tiles is consistent', () => {
     })
 })
 
-test('Get Random Tile works', () => {
-    expect(() => {
-        GetRandomTile()
-    }).not.toThrow()
+describe('The Functions should work as expected', () => {
+    test(' - Can flip a shown tile', () => {
+        const tile = new Tile('Pin', 1)
+        tile.flip()
+        expect(tile.isHidden).toBeTruthy()
+        expect(tile.unicode).toBe('&#127019;')
+    })
+
+    test(' - Can flip a hidden tile', () => {
+        const tile = new Tile('Pin', 1, false, true)
+        tile.flip()
+        expect(tile.isHidden).toBeFalsy()
+        expect(tile.unicode).toBe('&#127001;')
+    })
+
+    test(' - Get Random Tile works', () => {
+        expect(() => {
+            GetRandomTile()
+        }).not.toThrow()
+    })
 })

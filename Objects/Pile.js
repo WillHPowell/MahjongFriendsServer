@@ -1,8 +1,16 @@
 /* Describes how multiple Tiles should act */
 export default class Pile {
-    constructor(tiles, isHidden = false) {
+    constructor(tiles = [], isHidden = false) {
         this.tiles = tiles
         this.isHidden = isHidden
+
+
+        // If the tiles are not Hidden, but the Pile is, Flip all of the tiles provided
+        if (this.isHidden) {
+            for (let i = 0; i < this.numTiles; i++) {
+                if (this.tiles[i].isHidden !== this.isHidden) this.tiles[i].flip()
+            }
+        }
     }
 
     get numTiles() {
@@ -10,10 +18,10 @@ export default class Pile {
     }
 
     // Flips a between Hidden and Not Hidden
-    flipPile () {
+    flip() {
         this.isHidden = !this.isHidden
         for (let i = 0; i < this.numTiles; i++) {
-            this.tiles[i].flipTile()
+            this.tiles[i].flip()
         }
     }
 
@@ -38,21 +46,10 @@ export default class Pile {
         return this.tiles.splice(0, numToDeal)
     }
 
-    sortPile() {
+    sort() {
         this.tiles.sort((a, b) => {
-            return a.orderBy - b.orderBy
+            if (a.orderBy !== b.orderBy) return a.orderBy - b.orderBy
+            else return a.isRed ? -1 : 1
         })
-    }
-
-    getUnicode() {
-        let unicode = ''
-
-        if (this.numTiles > 0) {
-            for (let i = 1; i < this.numTiles; i++) {
-                unicode += this.tiles[i].getUnicode()
-            }
-        }
-
-        return unicode
     }
 }
